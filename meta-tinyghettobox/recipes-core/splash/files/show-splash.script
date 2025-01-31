@@ -1,0 +1,21 @@
+# Set the directory for images (using the ImageDir defined in the .plymouth file)
+image_dir = ImageDir;
+
+# Define startup and shutdown images
+startup_image = image_dir + "/splash-startup.png";
+shutdown_image = image_dir + "/splash-shutdown.png";
+
+# Determine if we are starting up or shutting down
+if (Plymouth.System.Shutdown()) {
+    # If system is shutting down, show the shutdown image
+    wallpaper_image = Image(shutdown_image);
+} else {
+    # If system is starting up, show the startup image
+    wallpaper_image = Image(startup_image);
+}
+
+# Set the position of the image (center)
+wallpaper_image.SetPosition(0.5, 0.5, 0);
+
+# Draw the image on the screen
+wallpaper_image.Draw();

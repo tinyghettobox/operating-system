@@ -1,0 +1,8 @@
+# Boot partition
+part /boot --source bootimg-partition --fstype=vfat --label boot --active --align 4096 --size 32M --ondisk sda2
+
+# Root partition using squashfs
+part / --source rootfs --fstype=squashfs --align 4096 --ondisk sda2
+
+# Optional: Add an extra partition for user data if needed
+# part /data --fstype=ext4 --label userdata --align 4096 --size 1024M --ondisk sda2

@@ -1,0 +1,8 @@
+# Boot partition
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 32M 
+
+# Root partition using squashfs
+part / --source rootfs --ondisk mmcblk0 --fstype=squashfs --align 4096 
+
+# Optional: Add an extra partition for user data if needed
+# part /data --fstype=ext4 --label userdata --align 4096 --size 1024M --ondisk mmcblk0

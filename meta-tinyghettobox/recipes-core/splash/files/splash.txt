@@ -1,0 +1,3 @@
+## Initramfs-Splash
+image=splash-shutdown.png
+fullscreen=1

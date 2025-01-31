@@ -1,0 +1,25 @@
+
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+
+SRC_URI += " \
+    file://initramfs.img \
+    file://splash.txt \
+    file://splash-startup.png \
+    file://splash-shutdown.png \
+    file://show-splash.script \
+    file://tinyghettobox.plymouth \
+"
+
+# Specify additional dependencies for Plymouth
+#PACKAGECONFIG = "pango drm udev"
+PACKAGECONFIG = "initrd freetype pango udev drm tracing upstart-monitoring ${PLYMOUTH_THEMES} ${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)}"
+
+# Extra configuration for Plymouth
+#EXTRA_OECONF += "--with-udev --with-runtimedir=/run"
+
+do_install:append () {
+    # Install the custom script for Plymouth
+    install -d ${D}${datadir}/plymouth/themes/tinyghettobox
+    install -m 0644 ${WORKDIR}/tinyghettobox.plymouth ${D}${datadir}/plymouth/themes/tinyghettobox/tinyghettobox.plymouth
+    install -m 0644 ${WORKDIR}/show-splash.script ${D}${datadir}/plymouth/themes/tinyghettobox/show-splash.script
+}

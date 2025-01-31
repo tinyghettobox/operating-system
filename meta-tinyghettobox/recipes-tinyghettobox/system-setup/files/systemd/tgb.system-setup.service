@@ -1,0 +1,11 @@
+[Unit]
+Description=WiFi configuration service
+
+[Service]
+ExecStart=/usr/bin/tinyghettobox/system-setup.sh
+Type=oneshot
+RemainAfterExit=false
+
+[Install]
+WantedBy=sysinit.target
+

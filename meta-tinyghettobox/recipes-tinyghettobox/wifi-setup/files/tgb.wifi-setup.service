@@ -1,0 +1,13 @@
+[Unit]
+Description=WiFi configuration service
+After=network.target
+Requires=wpa_supplicant.service
+
+[Service]
+ExecStart=/usr/bin/tinyghettobox/wifi-setup.sh
+Type=oneshot
+RemainAfterExit=false
+
+[Install]
+WantedBy=multi-user.target
+
