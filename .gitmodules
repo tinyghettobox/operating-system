@@ -1,9 +1,0 @@
-[submodule "meta-raspberrypi"]
-	path = meta-raspberrypi
-	url = ./meta-raspberrypi/
-[submodule "meta-openembedded"]
-	path = meta-openembedded
-	url = ./meta-openembedded/
-[submodule "poky"]
-	path = poky
-	url = ./poky
