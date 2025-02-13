@@ -4,7 +4,7 @@ require recipes-core/images/core-image-minimal.bb
 IMAGE_INSTALL:append = " wifi-setup"
 IMAGE_INSTALL:append = " system-setup"
 IMAGE_INSTALL:append = " brcm-files"
-IMAGE_INSTALL:append = " tgb-binaries"
+#IMAGE_INSTALL:append = " tgb-binaries"
 
 # Splash
 IMAGE_INSTALL:append = " psplash-startup psplash-startup-180 psplash-shutdown psplash-shutdown-180"

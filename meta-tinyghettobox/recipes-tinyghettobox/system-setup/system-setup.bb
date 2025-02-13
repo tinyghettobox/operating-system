@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = ""
 
 inherit deploy systemd
 
-COMPATIBLE_MACHINE = "^rpi$"
+#COMPATIBLE_MACHINE = "^rpi$"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI:append = " \

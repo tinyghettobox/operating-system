@@ -7,7 +7,7 @@ inherit deploy systemd
 DEPENDS = "wpa-supplicant"
 RDEPENDS:${PN} = "bash"
 
-COMPATIBLE_MACHINE = "^rpi$"
+#COMPATIBLE_MACHINE = "^rpi$"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI:append = " \
