@@ -1,5 +1,5 @@
 [Unit]
-Description=WiFi configuration service
+Description=System setup service
 
 [Service]
 ExecStart=/usr/bin/tinyghettobox/system-setup.sh

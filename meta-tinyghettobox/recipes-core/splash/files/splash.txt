@@ -1,3 +1,4 @@
 ## Initramfs-Splash
-image=splash-shutdown.png
+image=splash-startup.png
 fullscreen=1
+rotation=180

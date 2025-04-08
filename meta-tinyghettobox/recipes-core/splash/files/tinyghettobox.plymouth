@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=TGB Splash
-Description=Splash screen for tinyghettobox system
-ModuleName=script
-
-[script]
-ImageDir=/boot
-ScriptFile=/usr/share/plymouth/themes/tinyghettobox/show-splash.script

@@ -1,0 +1,6 @@
+ID = "tinyghettobox"
+NAME = "TinyGhettoBox OS"
+VERSION = "1.0"
+VERSION_ID = "1.0"
+VERSION_CODENAME = "onedotzero"
+PRETTY_NAME = "${NAME} ${VERSION}"

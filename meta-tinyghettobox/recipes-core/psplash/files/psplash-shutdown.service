@@ -1,0 +1,12 @@
+[Unit]
+Description=Psplash Shutdown Service
+DefaultDependencies=no
+Before=shutdown.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/psplash-shutdown -a 180
+RemainAfterExit=true
+
+[Install]
+WantedBy=shutdown.target

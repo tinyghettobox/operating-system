@@ -16,7 +16,6 @@ SRC_URI:append = " \
     file://wifi-setup.sh \
     file://wifi-config.txt \
     file://wpa_supplicant.conf \
-    file://wlan0.network \
     "
 
 SYSTEMD_SERVICE:${PN} = " tgb.wifi-setup.service"
@@ -36,9 +35,6 @@ do_install() {
 
     install -d ${D}${sysconfdir}/wpa_supplicant
     install -m 0644 ${WORKDIR}/wpa_supplicant.conf ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-wlan0.conf
-
-    install -d ${D}${sysconfdir}/systemd/network
-    install -m 0644 ${WORKDIR}/wlan0.network ${D}${sysconfdir}/systemd/network
 }
 
 FILES:${PN} += "\
@@ -46,7 +42,6 @@ FILES:${PN} += "\
     ${bindir}/tinyghettobox/wifi-setup.sh \
     ${bindir}/tinyghettobox/static-ip-setup.sh \
     ${sysconfdir}/wpa_supplicant.conf \
-    ${sysconfdir}/systemd/network/wlan0.network \
     "
 
 do_deploy() {
