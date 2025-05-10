@@ -1,0 +1,7 @@
+# gpt-image.wks
+bootloader --ptable msdos
+
+part /boot --source bootimg-partition --fstype vfat --align 4096 --size 64M
+part rootfs_a --source rootfs --fstype squashfs --align 4096 --extra-space 100M
+part rootfs_b --source rootfs --fstype squashfs --align 4096 --extra-space 100M
+part userdata --fstype ext4 --size 128M --align 4096
