@@ -5,7 +5,7 @@ Before=shutdown.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/psplash-shutdown -a 180
+ExecStart=/usr/bin/psplash-down
 RemainAfterExit=true
 
 [Install]

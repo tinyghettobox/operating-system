@@ -7,6 +7,11 @@
 # Halt on any error
 set -e
 
+BOOT_PARTITION_NO=1
+ROOT_PARTITION_A_NO=2
+ROOT_PARTITION_B_NO=3
+DATA_PARTITION_NO=4
+
 function log() {
    echo "init1: $@" > /dev/kmsg
    logger "init2: $@"
@@ -24,19 +29,23 @@ function find_partitions() {
    log "Found devices: $devices"
    for device in $devices; do
       if [[ -b /dev/$device ]]; then
-         partitions=$(lsblk -ln -o NAME /dev/$device | grep -E "^${device##*/}[0-9]+$")
+         # Get all block devices (includes device & partitions) and remove the device
+         partitions=$(lsblk -ln -o NAME /dev/$device | grep -vE "^${device##*/}$")
          log "Found partitions: $partitions"
-         count=0
+         count=1
          for partition in $partitions; do
-            case $count in
-               0) BOOT_PARTITION="/dev/$partition" ;;
-               1) ROOT_PARTITION_A="/dev/$partition" ;;
-               2) ROOT_PARTITION_B="/dev/$partition" ;;
-               3) DATA_PARTITION="/dev/$partition" ;;
-            esac
+            if [[ $count -eq $BOOT_PARTITION_NO ]]; then
+               BOOT_PARTITION="/dev/$partition"
+            elif [[ $count -eq $ROOT_PARTITION_A_NO ]]; then
+               ROOT_PARTITION_A="/dev/$partition"
+            elif [[ $count -eq $ROOT_PARTITION_B_NO ]]; then
+               ROOT_PARTITION_B="/dev/$partition"
+            elif [[ $count -eq $DATA_PARTITION_NO ]]; then
+               DATA_PARTITION="/dev/$partition"
+            fi
             count=$((count+1))
          done
-         if [[ $count -eq 4 ]]; then
+         if [[ $count -eq 5 ]]; then
             STORAGE_DEVICE="/dev/$device"
             return 0
          else
@@ -74,7 +83,7 @@ function show_splash() {
          SPLASH_OPT="$SPLASH_OPT --orientation 2"
       elif [[ "$SPLASH_ROTATION" = "270" ]]; then
          SPLASH_OPT="$SPLASH_OPT --orientation 2"
-      else
+      elif [[ "$SPLASH_ROTATION" != "0" ]]; then
          log "Unknown splash rotation $SPLASH_ROTATION"
       fi
    fi
@@ -124,7 +133,7 @@ function mount_boot() {
    n=0
    until [ $n -ge 3 ]
    do
-      mount -o ro $BOOT_PARTITION $BOOT_MOUNT  && log "Boot mounted" && break
+      mount -o rw $BOOT_PARTITION $BOOT_MOUNT  && log "Boot mounted" && break
       let "n=n+1"
       sleep .5
    done
@@ -146,8 +155,11 @@ function mount_rootfs() {
    fi
 }
 
-function mount_overlay() {
+function mount_data() {
    mount -t ext4 $DATA_PARTITION $DATA_MOUNT
+}
+
+function mount_overlay() {
    OVERLAY_MOUNTPATHS=$(test -f $BOOT_MOUNT/overlay_mounts && cat $BOOT_MOUNT/overlay_mounts || echo "etc srv")
    # Prepare overlay mounts
    for DIR in $OVERLAY_MOUNTPATHS; do
@@ -167,12 +179,31 @@ mount_essentials
 prepare_variables
 mount_boot
 show_splash
-mount_rootfs
+
 # On the first boot we want to resize the data partition and therefore we don't mount the partition here
 # We do that using systemd service tgb.system-setup.service instead of this script to keep initramfs small
-if [ -f $BOOT_MOUNT/resized ]; then
-   mount_overlay
+if [ ! -f $BOOT_MOUNT/resized ]; then
+   log "Resizing partition $DATA_PARTITION"
+   source ./resize.sh
+
+   resize_data_to_disk || {
+      log "Resize failed, continuing anyway"
+   }
 fi
+
+mount_data
+
+if [ -d $DATA_MOUNT/srv/upper/update ]; then
+   log "Found update, applying it..."
+   source ./update.sh
+
+   write_update_to_partition || {
+      log "Update failed, continuing anyway"
+   }
+fi
+
+mount_rootfs
+mount_overlay
 
 umount $BOOT_MOUNT
 

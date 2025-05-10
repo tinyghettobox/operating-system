@@ -108,8 +108,8 @@ then
   exit 0
 fi
 
-if [ ! -d $((dirname $NETWORKD_FILE)) ]; then
-  mkdir -p $(dirname $NETWORKD_FILE)
+if [ ! -d "$((dirname \"$NETWORKD_FILE\"))" ]; then
+  mkdir -p "$(dirname \"$NETWORKD_FILE\")"
 fi
 
 # Configuring wpa_supplicant will connect to the wifi

@@ -5,6 +5,8 @@ Description=System setup service
 ExecStart=/usr/bin/tinyghettobox/system-setup.sh
 Type=oneshot
 RemainAfterExit=false
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=sysinit.target

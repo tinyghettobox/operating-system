@@ -1,10 +1,9 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SPLASH_IMAGES:append = " \
-    file://splash-startup.png;outsuffix=startup \
-    file://splash-shutdown.png;outsuffix=shutdown \
-    file://splash-startup-180.png;outsuffix=startup-180 \
-    file://splash-shutdown-180.png;outsuffix=shutdown-180 \
+    file://splash-up.png;outsuffix=startup \
+    file://splash-up.png;outsuffix=up \
+    file://splash-down.png;outsuffix=down \
     "
 ALTERNATIVE_PRIORITY_psplash-tinyghettobox[psplash] = "200"
 

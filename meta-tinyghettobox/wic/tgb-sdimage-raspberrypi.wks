@@ -1,8 +1,11 @@
+bootloader --ptable gpt
+
 # Boot partition
-part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 32M
+part /boot --source bootimg-partition --fstype=vfat --part-name boot --align 4096 --size 32M --ondisk mmcblk0
 
 # Root partition using squashfs
-part / --source rootfs --ondisk mmcblk0 --fstype=squashfs --align 4096 
+part /rootfs_b --source rootfs --fstype=squashfs --align 4096 --part-name rootfs_a --ondisk mmcblk0
+part /rootfs_b --size 1M --align 4096 --part-name rootfs_b --ondisk mmcblk0
 
 # Optional: Add an extra partition for user data if needed
-part --fstype=ext4 --label userdata --align 4096 --size 128M --ondisk mmcblk0 
+part --fstype=ext4 --part-name userdata --align 4096 --size 128M --ondisk mmcblk0
